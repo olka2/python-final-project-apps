@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: python-final-project
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: python-final-project
+  sources:
+    - repoURL: 'git@github.com:olka2/python-final-project-helm.git'
+      targetRevision: main
+      path: python-final-project
+      helm:
+        valueFiles: ["values.yaml", "image.yaml"]
+    - repoURL: 'git@github.com:olka2/python-final-project-helm.git'
+      targetRevision: main
+      ref: values
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
